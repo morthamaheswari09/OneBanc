@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Header from "./Header";
+import MascotHeader from "./MascotHeader";
 import MoneyPlan from "./MoneyPlan";
 import FlexPocket from "./FlexPocket";
 import DailyInsight from "./DailyInsight";
@@ -11,9 +11,7 @@ function MorningDashboard({
   insight,
   onPlanChange,
 }) {
-
-  const [budget, setBudget] =
-    useState(initialBudget);
+  const [budget, setBudget] = useState(initialBudget);
 
   const [categories, setCategories] =
     useState(initialCategories);
@@ -31,7 +29,6 @@ function MorningDashboard({
     budget,
     categories,
   }) => {
-
     setBudget(budget);
     setCategories(categories);
 
@@ -43,8 +40,7 @@ function MorningDashboard({
 
   return (
     <>
-
-      <Header />
+      <MascotHeader state="morning" />
 
       <div className="dashboard-content">
 
@@ -63,7 +59,6 @@ function MorningDashboard({
         />
 
       </div>
-
     </>
   );
 }

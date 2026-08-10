@@ -1108,3 +1108,289 @@ input {
   color: #77736b;
 }
 
+/* =========================
+   DYNAMIC MASCOT HEADER
+========================= */
+
+.mascot-header {
+  margin: 0 16px 16px;
+  padding: 20px;
+  border-radius: 26px;
+
+  overflow: hidden;
+  position: relative;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+
+  transition:
+    background 0.4s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================
+   MASCOT BACKGROUNDS
+========================= */
+
+.mascot-morning {
+  background:
+    linear-gradient(
+      135deg,
+      #dff2ff 0%,
+      #eaf6ff 48%,
+      #fff0c7 100%
+    );
+}
+
+.mascot-afternoon {
+  background:
+    linear-gradient(
+      135deg,
+      #ffe4a8 0%,
+      #fff0c9 48%,
+      #ffd8a8 100%
+    );
+}
+
+.mascot-evening {
+  background:
+    linear-gradient(
+      135deg,
+      #ffe1a8 0%,
+      #f7d6c9 50%,
+      #ddd5ee 100%
+    );
+}
+
+.mascot-rainy {
+  background:
+    linear-gradient(
+      135deg,
+      #dce7ed 0%,
+      #dcecf5 50%,
+      #cddde5 100%
+    );
+}
+
+.mascot-winter {
+  background:
+    linear-gradient(
+      135deg,
+      #e5f5fb 0%,
+      #eef5ff 50%,
+      #e1e5f5 100%
+    );
+}
+
+
+/* =========================
+   TOP SECTION
+========================= */
+
+.mascot-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  position: relative;
+  z-index: 2;
+}
+
+.mascot-greeting {
+  margin: 0;
+
+  font-size: 12px;
+  color: #77736b;
+}
+
+.mascot-top h1 {
+  margin: 6px 0 0;
+
+  max-width: 220px;
+
+  font-size: 22px;
+  line-height: 1.15;
+
+  letter-spacing: -0.6px;
+}
+
+
+/* =========================
+   WEATHER BADGE
+========================= */
+
+.mascot-weather-badge {
+  flex-shrink: 0;
+
+  padding: 7px 10px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(10px);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #55524c;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+
+/* =========================
+   WEATHER INFO
+========================= */
+
+.mascot-weather {
+  margin-top: 16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  position: relative;
+  z-index: 2;
+}
+
+.mascot-weather-icon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+}
+
+.mascot-weather strong {
+  font-size: 12px;
+}
+
+.mascot-weather p {
+  margin: 2px 0 0;
+
+  color: #77736b;
+
+  font-size: 10px;
+}
+
+
+/* =========================
+   MASCOT STAGE
+========================= */
+
+.mascot-stage {
+  height: 145px;
+
+  margin-top: 5px;
+
+  position: relative;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+
+/* =========================
+   MASCOT IMAGE
+========================= */
+
+.mascot-image {
+  height: 145px;
+  max-width: 85%;
+
+  object-fit: contain;
+
+  position: relative;
+  z-index: 1;
+
+  filter:
+    drop-shadow(
+      0 8px 10px rgba(40, 40, 35, 0.12)
+    );
+
+  transition:
+    transform 0.25s ease;
+}
+
+.mascot-image:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+
+/* =========================
+   SPEECH BUBBLE
+========================= */
+
+.mascot-bubble {
+  position: absolute;
+
+  top: 8px;
+  right: 4px;
+
+  z-index: 3;
+
+  max-width: 145px;
+
+  padding: 9px 12px;
+
+  border-radius: 17px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 5px 15px rgba(30, 29, 25, 0.08);
+
+  color: #45433f;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  backdrop-filter: blur(8px);
+
+  animation: mascotBubbleIn 0.4s ease-out;
+}
+
+
+/* speech bubble tail */
+
+.bubble-tail {
+  position: absolute;
+
+  bottom: -5px;
+  left: 18px;
+
+  width: 10px;
+  height: 10px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  transform: rotate(45deg);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+
+@keyframes mascotBubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
