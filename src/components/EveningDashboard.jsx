@@ -3,7 +3,7 @@ import DayRecap from "./DayRecap";
 import TomorrowPlan from "./TomorrowPlan";
 import MascotHeader from "./MascotHeader";
 
-function EveningDashboard({ data }) {
+function EveningDashboard({ data , streak }) {
   return (
     <>
       <MascotHeader state="evening" />
@@ -11,6 +11,7 @@ function EveningDashboard({ data }) {
       <div className="dashboard-content">
         <EveningSummary
           data={data}
+          streak={streak}
         />
 
         <DayRecap

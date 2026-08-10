@@ -1,4 +1,6 @@
-function EveningSummary({ data }) {
+function EveningSummary({ data , streak }) {
+  const budgetMaintained =
+    data.spent <= data.budget;
   return (
     <section className="evening-summary">
 
@@ -41,7 +43,29 @@ function EveningSummary({ data }) {
         </div>
 
       </div>
+        <div className="streak-card">
 
+        <div className="streak-icon">
+          🔥
+        </div>
+
+        <div className="streak-content">
+
+          <strong>
+            {budgetMaintained
+              ? `${streak} day streak`
+              : "Streak reset"}
+          </strong>
+
+          <p>
+            {budgetMaintained
+              ? "You stayed within the budget you set."
+              : "You went over today's budget."}
+          </p>
+
+        </div>
+
+      </div>
     </section>
   );
 }

@@ -109,7 +109,7 @@ export const afternoonData = {
 export const eveningData = {
   time: "5:00 PM",
 
-  spent: 820,
+  spent: 1300,
 
   remaining: 380,
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 
@@ -10,6 +10,7 @@ import {
   afternoonData,
   eveningData,
 } from "./data/mockData";
+
 const getTimeState = () => {
   const hour = new Date().getHours();
 
@@ -23,6 +24,7 @@ const getTimeState = () => {
 
   return "5:00 PM";
 };
+
 function App() {
   const [currentTime, setCurrentTime] =
     useState(getTimeState);
@@ -32,70 +34,183 @@ function App() {
       budget: dayData.budget,
       categories: dayData.categories,
     });
-    const changeTime = (time) => {
-  setCurrentTime(time);
-};
-    const getAfternoonData = () => {
-  const updatedCategories =
-    afternoonData.categories.map((category) => {
-      const morningCategory =
-        morningPlan.categories.find(
-          (item) => item.id === category.id
-        );
 
-      return {
-        ...category,
-        planned:
-          morningCategory?.amount ??
-          category.planned,
-      };
-    });
+  const [streak, setStreak] = useState(() => {
+    const savedStreak = localStorage.getItem("onebancStreak");
+    return savedStreak ? Number(savedStreak) : 0;
+  });
 
-  return {
-    ...afternoonData,
-
-    categories: updatedCategories,
-
-    remaining:
-      morningPlan.budget -
-      afternoonData.spent,
-
-    moneyProgress:
-      Math.round(
-        (afternoonData.spent /
-          morningPlan.budget) *
-          100
-      ),
+  const changeTime = (time) => {
+    setCurrentTime(time);
   };
-};
-const getEveningData = () => {
-  return {
-    ...eveningData,
 
-    budget: morningPlan.budget,
+  const getAfternoonData = () => {
+    const updatedCategories =
+      afternoonData.categories.map((category) => {
+        const morningCategory =
+          morningPlan.categories.find(
+            (item) => item.id === category.id
+          );
 
-    remaining:
-      morningPlan.budget -
-      eveningData.spent,
+        return {
+          ...category,
+          planned:
+            morningCategory?.amount ??
+            category.planned,
+        };
+      });
+
+    return {
+      ...afternoonData,
+
+      categories: updatedCategories,
+
+      remaining:
+        morningPlan.budget -
+        afternoonData.spent,
+
+      moneyProgress:
+        Math.round(
+          (afternoonData.spent /
+            morningPlan.budget) *
+            100
+        ),
+    };
   };
-};
+
+  const getEveningData = () => {
+    return {
+      ...eveningData,
+
+      budget: morningPlan.budget,
+
+      remaining:
+        morningPlan.budget -
+        eveningData.spent,
+    };
+  };
+
+  /*
+   * Evaluate today's budget only once.
+   */
+  const evaluateStreak = () => {
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
+
+    const lastEvaluatedDate =
+      localStorage.getItem(
+        "onebancLastEvaluatedDate"
+      );
+
+    // Already evaluated today
+    if (lastEvaluatedDate === today) {
+      return streak;
+    }
+
+    const budgetMaintained =
+      eveningData.spent <= morningPlan.budget;
+
+    let newStreak;
+
+    if (!budgetMaintained) {
+      // Budget exceeded
+      newStreak = 0;
+    } else {
+      const yesterday = new Date();
+
+      yesterday.setDate(
+        yesterday.getDate() - 1
+      );
+
+      const yesterdayString =
+        yesterday
+          .toISOString()
+          .split("T")[0];
+
+      const previousStreak =
+        Number(
+          localStorage.getItem(
+            "onebancStreak"
+          )
+        ) || 0;
+
+      if (
+        lastEvaluatedDate ===
+        yesterdayString
+      ) {
+        // Consecutive successful day
+        newStreak = previousStreak + 1;
+      } else {
+        // First successful day or streak was broken
+        newStreak = 1;
+      }
+    }
+
+    localStorage.setItem(
+      "onebancStreak",
+      newStreak
+    );
+
+    localStorage.setItem(
+      "onebancLastEvaluatedDate",
+      today
+    );
+
+    setStreak(newStreak);
+
+    return newStreak;
+  };
+
+  /*
+   * Evaluate streak when Evening state is opened.
+   */
+  const currentEveningData = getEveningData();
+
+      useEffect(() => {
+        if (currentTime !== "5:00 PM") {
+          return;
+        }
+
+        evaluateStreak();
+      }, [currentTime]);
+
   return (
-    <main className="app">
-
+    <main>
       <div className="dashboard">
-        {/* <div className="dev-time-switch">
-            <button onClick={() => changeTime("9:00 AM")}>
-              9 AM
-            </button>
 
-            <button onClick={() => changeTime("2:00 PM")}>
-              2 PM
-            </button>
+        {/* Development time switch */}
 
-            <button onClick={() => changeTime("5:00 PM")}>
-              5 PM
-            </button>
-          </div> */}
+        {/* { 
+        <div className="dev-time-switch">
+
+          <button
+            onClick={() =>
+              changeTime("9:00 AM")
+            }
+          >
+            9 AM
+          </button>
+
+          <button
+            onClick={() =>
+              changeTime("2:00 PM")
+            }
+          >
+            2 PM
+          </button>
+
+          <button
+            onClick={() =>
+              changeTime("5:00 PM")
+            }
+          >
+            5 PM
+          </button>
+
+        </div>
+        } */}
+
         <Dashboard
           currentTime={currentTime}
 
@@ -113,7 +228,9 @@ const getEveningData = () => {
               getAfternoonData(),
 
             eveningData:
-              getEveningData(),
+              currentEveningData,
+
+            streak,
 
             onPlanChange:
               setMorningPlan,
@@ -123,7 +240,6 @@ const getEveningData = () => {
         <BottomNav />
 
       </div>
-
     </main>
   );
 }

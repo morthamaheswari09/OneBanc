@@ -25,6 +25,7 @@ function Dashboard({
   return (
     <EveningDashboard
       data={morningProps.eveningData}
+      streak={morningProps.streak}
     />
   );
 }
